@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🛍️ Tienda Online Premium</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/tienda-vite/style.css">
+</head>
+<body>
+    <!-- HEADER -->
+    <header class="main-header">
+        <div class="header-container">
+            <a href="#" class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-store"></i>
+                </div>
+                <span>ShopPTODO</span>
+            </a>
+            
+            <div class="nav-controls">
+                <div class="search-container">
+                    <input type="text" class="search-input" id="searchInput" placeholder="Buscar productos...">
+                    <button class="search-btn" id="searchBtn">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+                
+                <div class="user-actions">
+                    <button class="btn-login" id="loginBtn">
+                        <i class="fas fa-user"></i> Iniciar Sesión
+                    </button>
+                    
+                    <a href="/tienda-vite/admin.html" class="btn-admin" title="Panel de Administración">
+                        <i class="fas fa-cog"></i>
+                    </a>
+                    
+                    <button class="cart-btn" id="cartBtn">
+                        <i class="fas fa-shopping-bag"></i>
+                        <span class="cart-count" id="cartCount">0</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Descubre Productos Excepcionales</h1>
+            <p>Encuentra lo mejor en tecnología, moda y más con envío rápido y garantía de satisfacción</p>
+        </div>
+    </section>
+
+    <!-- FILTROS Y CATEGORÍAS -->
+    <section class="filters-section">
+        <div class="categories" id="categories">
+            <button class="category-btn active" data-category="all">
+                <i class="fas fa-th-large"></i> Todos
+            </button>
+            <button class="category-btn" data-category="electronics">
+                <i class="fas fa-laptop"></i> Electrónica
+            </button>
+            <button class="category-btn" data-category="clothing">
+                <i class="fas fa-tshirt"></i> Ropa
+            </button>
+            <button class="category-btn" data-category="home">
+                <i class="fas fa-home"></i> Hogar
+            </button>
+            <button class="category-btn" data-category="books">
+                <i class="fas fa-book"></i> Libros
+            </button>
+            <button class="category-btn" data-category="sports">
+                <i class="fas fa-basketball-ball"></i> Deportes
+            </button>
+        </div>
+        
+        <div class="filter-controls">
+            <div>
+                <span id="productCount">0 productos</span>
+            </div>
+            
+            <select class="sort-select" id="sortSelect">
+                <option value="default">Ordenar por: Predeterminado</option>
+                <option value="price-asc">Precio: Menor a Mayor</option>
+                <option value="price-desc">Precio: Mayor a Menor</option>
+                <option value="name-asc">Nombre: A-Z</option>
+                <option value="name-desc">Nombre: Z-A</option>
+            </select>
+            
+            <div class="view-toggle">
+                <button class="view-btn active" data-view="grid">
+                    <i class="fas fa-th-large"></i>
+                </button>
+                <button class="view-btn" data-view="list">
+                    <i class="fas fa-list"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- PRODUCTOS - VISTA GRID -->
+    <div class="products-grid" id="productsGrid"></div>
+
+    <!-- PRODUCTOS - VISTA LISTA -->
+    <div class="products-list" id="productsList"></div>
+
+    <!-- CARRITO -->
+    <div class="cart-overlay" id="cartOverlay"></div>
+    
+    <div class="cart-sidebar" id="cartSidebar">
+        <div class="cart-header">
+            <h2><i class="fas fa-shopping-bag"></i> Tu Carrito</h2>
+            <button class="close-cart" id="closeCart">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <div class="cart-items" id="cartItems"></div>
+        
+        <div class="cart-footer">
+            <div class="cart-totals">
+                <div class="total-row">
+                    <span>Subtotal</span>
+                    <span id="cartSubtotal">€0.00</span>
+                </div>
+                <div class="total-row">
+                    <span>Envío</span>
+                    <span id="cartShipping">Gratis</span>
+                </div>
+                <div class="total-row">
+                    <span>IVA (21%)</span>
+                    <span id="cartTax">€0.00</span>
+                </div>
+                <div class="total-row final">
+                    <span>Total</span>
+                    <span id="cartTotal">€0.00</span>
+                </div>
+            </div>
+            
+            <button class="checkout-btn" id="checkoutBtn">
+                <i class="fas fa-lock"></i> Proceder al Pago
+            </button>
+        </div>
+    </div>
+
+    <!-- NOTIFICACIONES -->
+    <div class="notification-container" id="notificationContainer"></div>
+
+    <!-- CHECKOUT MODAL -->
+    <div class="checkout-overlay" id="checkoutOverlay"></div>
+    <div class="checkout-modal" id="checkoutModal">
+        <div class="checkout-header">
+            <h2><i class="fas fa-credit-card"></i> Finalizar Compra</h2>
+            <button class="close-checkout" id="closeCheckout">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <form id="checkoutForm" class="checkout-form">
+            <div class="checkout-section">
+                <h3><i class="fas fa-user"></i> Datos Personales</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="customerName">Nombre completo *</label>
+                        <input type="text" id="customerName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="customerEmail">Email *</label>
+                        <input type="email" id="customerEmail" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="customerPhone">Teléfono *</label>
+                        <input type="tel" id="customerPhone" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="customerAddress">Dirección completa *</label>
+                        <input type="text" id="customerAddress" required>
+                    </div>
+                </div>
+            </div>
+
+            <div class="checkout-section">
+                <h3><i class="fas fa-shopping-cart"></i> Resumen del Pedido</h3>
+                <div class="order-summary" id="orderSummary"></div>
+            </div>
+
+            <div class="checkout-actions">
+                <button type="button" class="btn-cancel" id="cancelCheckout">Cancelar</button>
+                <button type="submit" class="btn-submit">
+                    <i class="fas fa-check"></i> Confirmar Pedido
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="main-footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>ShopPremium</h3>
+                <p>Tu destino para productos de calidad con la mejor experiencia de compra en línea.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-tiktok"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Enlaces Rápidos</h3>
+                <div class="footer-links">
+                    <a href="#">Inicio</a>
+                    <a href="#">Productos</a>
+                    <a href="#">Categorías</a>
+                    <a href="#">Ofertas</a>
+                    <a href="#">Nuevos</a>
+                    <a href="/tienda-vite/admin.html" class="admin-link"><i class="fas fa-cog"></i> Admin</a>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Ayuda</h3>
+                <div class="footer-links">
+                    <a href="#">Contacto</a>
+                    <a href="#">FAQ</a>
+                    <a href="#">Envíos</a>
+                    <a href="#">Devoluciones</a>
+                    <a href="#">Términos</a>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Contacto</h3>
+                <div class="footer-links">
+                    <a href="#"><i class="fas fa-map-marker-alt"></i> Sevilla, España</a>
+                    <a href="#"><i class="fas fa-phone"></i> +34 652 864 329</a>
+                    <a href="#"><i class="fas fa-envelope"></i> valencina2012@hotmail.es</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="/tienda-vite/main.js"></script>
+</body>
+</html>

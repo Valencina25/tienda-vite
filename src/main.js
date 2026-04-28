@@ -1,18 +1,19 @@
 // ============================================
-// TIENDA ONLINE MEJORADA - Vite Edition
+// TIENDA ONLINE MEJORADA
 // ============================================
 
 // CONFIGURACIÓN
 const config = {
     currency: '€',
     shippingFreeLimit: 50,
-    taxRate: 0.21 // 21% IVA
+    taxRate: 0.21
 };
 
-// CONSTANTE PARA PEDIDOS
+// CLAVES
 const ORDERS_STORAGE_KEY = 'shopOrders';
+const PRODUCTS_KEY = 'adminProducts';
 
-// DATOS DE PRODUCTOS (carga desde localStorage o usa valores por defecto)
+// PRODUCTOS POR DEFECTO
 const defaultProducts = [
     {
         id: 1,
@@ -154,9 +155,11 @@ const defaultProducts = [
 ];
 
 // CARGAR PRODUCTOS
+let products = loadProducts();
+
 function loadProducts() {
     try {
-        const stored = localStorage.getItem('adminProducts');
+        const stored = localStorage.getItem(PRODUCTS_KEY);
         if (stored) {
             const parsed = JSON.parse(stored);
             if (Array.isArray(parsed) && parsed.length > 0) {
@@ -168,8 +171,6 @@ function loadProducts() {
     }
     return defaultProducts;
 }
-
-let products = loadProducts();
 
 // ESTADO GLOBAL
 let cart = JSON.parse(localStorage.getItem('shopPremiumCart')) || [];
@@ -305,7 +306,7 @@ function renderGridView(productsToRender) {
     grid.innerHTML = productsToRender.map(product => `
         <div class="product-card" data-id="${product.id}">
             ${product.tags.includes('oferta') ? '<span class="product-badge">🔥 Oferta</span>' : ''}
-            ${product.tags.includes('nuevo') ? '<span class="product-badge" style="background:var(--accent);">✨ Nuevo</span>' : ''}
+            ${product.tags.includes('nuevo') ? '<span class="product-badge" style="background:var(--accent);top:45px;">✨ Nuevo</span>' : ''}
             
             <div class="product-image">
                 <img src="${product.image}" alt="${product.name}" 
