@@ -5,7 +5,7 @@ const config = {
     taxRate: 0.21
 };
 
-// PRODUCTOS POR DEFECTO
+// PRODUCTOS
 const products = [
     {
         id: 1,
@@ -83,29 +83,79 @@ function setupEvents() {
     });
 }
 
-function renderProducts() {
-    var grid = document.getElementById('productsGrid');
-    var html = '';
-    
-    products.forEach(function(p) {
-        html += '<div class="product-card">';
-        html += '<h3>' + p.name + '</h3>';
-        html += '<p>' + p.price + ' €</p>';
-        html += '<button onclick="addToCart(' + p.id + ')">Añadir</button>';
-        html += '</div>';
-    });
-    
-    grid.innerHTML = html;
-    document.getElementById('productCount').textContent = products.length + ' productos';
-}
-
 function toggleCart() {
     document.getElementById('cartSidebar').classList.toggle('active');
 }
 
+function renderProducts() {
+    var grid = document.getElementById('productsGrid');
+    var filtered = products;
+    
+    if (currentCategory !== 'all') {
+        filtered = products.filter(function(p) {
+            return p.category === currentCategory;
+        });
+    }
+    
+    var html = '';
+    filtered.forEach(function(p) {
+        html += '<div class="product-card">';
+        html += '<img src="' + p.image + '" style="width:100%;height:200px;object-fit:cover;">';
+        html += '<div style="padding:20px;">';
+        html += '<h3>' + p.name + '</h3>';
+        html += '<p>' + p.price + ' €</p>';
+        html += '<button onclick="addToCart(' + p.id + ')">Añadir</button>';
+        html += '</div></div>';
+    });
+    
+    grid.innerHTML = html;
+    document.getElementById('productCount').textContent = filtered.length + ' productos';
+}
+
 window.addToCart = function(id) {
-    alert('Producto ' + id + ' añadido');
+    var product = products.find(function(p) { return p.id === id; });
+    if (!product) return;
+    
+    var existingItem = cart.find(function(item) { return item.id === id; });
+    
+    if (existingItem) {
+        existingItem.quantity += 1;
+    } else {
+        cart.push({
+            id: product.id,
+            name: product.name,
+            price: product.price,
+            image: product.image,
+            quantity: 1
+        });
+    }
+    
+    updateCartUI();
+    alert(product.name + ' añadido al carrito');
 };
+
+function updateCartUI() {
+    var totalItems = cart.reduce(function(sum, item) { return sum + item.quantity; }, 0);
+    document.getElementById('cartCount').textContent = totalItems;
+    
+    var cartItems = document.getElementById('cartItems');
+    if (cart.length === 0) {
+        cartItems.innerHTML = '<p>Carrito vacío</p>';
+        return;
+    }
+    
+    var html = '';
+    cart.forEach(function(item) {
+        html += '<div style="padding:10px;border-bottom:1px solid #ccc;">';
+        html += '<p>' + item.name + ' x' + item.quantity + '</p>';
+        html += '</div>';
+    });
+    cartItems.innerHTML = html;
+    
+    var subtotal = cart.reduce(function(sum, item) { return sum + (item.price * item.quantity); }, 0);
+    document.getElementById('cartSubtotal').textContent = subtotal.toFixed(2) + ' €';
+    document.getElementById('cartTotal').textContent = subtotal.toFixed(2) + ' €';
+}
 
 function updateCartCount() {
     document.getElementById('cartCount').textContent = cart.length;
