@@ -153,9 +153,8 @@ const defaultProducts = [
     }
 ];
 
-let products = loadProductsFromStorage();
-
-function loadProductsFromStorage() {
+// CARGAR PRODUCTOS
+function loadProducts() {
     try {
         const stored = localStorage.getItem('adminProducts');
         if (stored) {
@@ -167,26 +166,10 @@ function loadProductsFromStorage() {
     } catch (e) {
         console.error('Error loading products:', e);
     }
-    return [...defaultProducts];
-}
-];
-
-let products = loadProductsFromStorage();
-
-function loadProductsFromStorage() {
-    try {
-        const stored = localStorage.getItem('adminProducts');
-        if (stored) {
-            const parsed = JSON.parse(stored);
-            if (Array.isArray(parsed) && parsed.length > 0) {
-                return parsed;
-            }
-        }
-    } catch (e) {
-        console.error('Error loading products from storage:', e);
-    }
     return defaultProducts;
 }
+
+let products = loadProducts();
 
 // ESTADO GLOBAL
 let cart = JSON.parse(localStorage.getItem('shopPremiumCart')) || [];
@@ -200,21 +183,17 @@ document.addEventListener('DOMContentLoaded', () => {
     updateCartUI();
 });
 
-// INICIALIZAR TIENDA
 function initStore() {
     renderProducts();
     setupEventListeners();
     updateProductCount();
 }
 
-// CONFIGURAR EVENT LISTENERS
 function setupEventListeners() {
-    // Botón carrito
     document.getElementById('cartBtn').addEventListener('click', toggleCart);
     document.getElementById('closeCart').addEventListener('click', toggleCart);
     document.getElementById('cartOverlay').addEventListener('click', toggleCart);
     
-    // Categorías
     document.querySelectorAll('.category-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
             document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
@@ -224,7 +203,6 @@ function setupEventListeners() {
         });
     });
     
-    // Vista grid/lista
     document.querySelectorAll('.view-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
             document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
@@ -234,17 +212,13 @@ function setupEventListeners() {
         });
     });
     
-    // Ordenar
     document.getElementById('sortSelect').addEventListener('change', (e) => {
         currentSort = e.target.value;
         renderProducts();
     });
     
-    // Buscar
     document.getElementById('searchBtn').addEventListener('click', searchProducts);
     document.getElementById('searchInput').addEventListener('input', searchProducts);
-    
-    // Checkout
     document.getElementById('checkoutBtn').addEventListener('click', processCheckout);
     document.getElementById('closeCheckout').addEventListener('click', closeCheckoutModal);
     document.getElementById('checkoutOverlay').addEventListener('click', closeCheckoutModal);
@@ -252,7 +226,6 @@ function setupEventListeners() {
     document.getElementById('checkoutForm').addEventListener('submit', handleCheckoutSubmit);
 }
 
-// TOGGLE CARRITO
 function toggleCart() {
     const sidebar = document.getElementById('cartSidebar');
     const overlay = document.getElementById('cartOverlay');
@@ -261,12 +234,10 @@ function toggleCart() {
     document.body.style.overflow = sidebar.classList.contains('active') ? 'hidden' : '';
 }
 
-// BÚSQUEDA
 function searchProducts() {
     renderProducts();
 }
 
-// OBTENER NOMBRE DE CATEGORÍA
 function getCategoryName(category) {
     const names = {
         'electronics': 'Electrónica',
@@ -278,13 +249,11 @@ function getCategoryName(category) {
     return names[category] || category;
 }
 
-// ACTUALIZAR CONTADOR DE PRODUCTOS
 function updateProductCount() {
     const filtered = filterProducts();
     document.getElementById('productCount').textContent = `${filtered.length} productos`;
 }
 
-// RENDERIZAR PRODUCTOS
 function renderProducts() {
     let filteredProducts = filterProducts();
     filteredProducts = sortProducts(filteredProducts);
@@ -302,7 +271,6 @@ function renderProducts() {
     updateProductCount();
 }
 
-// FILTRAR PRODUCTOS
 function filterProducts() {
     const searchTerm = document.getElementById('searchInput').value.toLowerCase();
     let filtered = currentCategory === 'all' ? products : products.filter(p => p.category === currentCategory);
@@ -317,7 +285,6 @@ function filterProducts() {
     return filtered;
 }
 
-// ORDENAR PRODUCTOS
 function sortProducts(productList) {
     switch(currentSort) {
         case 'price-asc':
@@ -333,7 +300,6 @@ function sortProducts(productList) {
     }
 }
 
-// VISTA GRID
 function renderGridView(productsToRender) {
     const grid = document.getElementById('productsGrid');
     grid.innerHTML = productsToRender.map(product => `
@@ -389,7 +355,6 @@ function renderGridView(productsToRender) {
     `).join('');
 }
 
-// VISTA LISTA
 function renderListView(productsToRender) {
     const list = document.getElementById('productsList');
     list.innerHTML = productsToRender.map(product => `
@@ -434,7 +399,6 @@ function renderListView(productsToRender) {
     `).join('');
 }
 
-// AGREGAR AL CARRITO
 window.addToCart = function(productId) {
     const product = products.find(p => p.id === productId);
     if (!product) return;
@@ -463,7 +427,6 @@ window.addToCart = function(productId) {
     updateCartUI();
     showNotification(`${product.name} añadido al carrito`, 'success');
     
-    // Animación del botón
     const btn = document.querySelector(`.add-to-cart[onclick="addToCart(${productId})"]`);
     if (btn) {
         btn.classList.add('added');
@@ -475,7 +438,6 @@ window.addToCart = function(productId) {
     }
 };
 
-// ACTUALIZAR CANTIDAD
 window.updateQuantity = function(productId, change) {
     const item = cart.find(item => item.id === productId);
     if (!item) return;
@@ -498,7 +460,6 @@ window.updateQuantity = function(productId, change) {
     updateCartUI();
 };
 
-// ELIMINAR DEL CARRITO
 window.removeFromCart = function(productId) {
     cart = cart.filter(item => item.id !== productId);
     saveCart();
@@ -506,25 +467,20 @@ window.removeFromCart = function(productId) {
     showNotification('Producto eliminado del carrito', 'info');
 };
 
-// GUARDAR CARRITO
 function saveCart() {
     localStorage.setItem('shopPremiumCart', JSON.stringify(cart));
 }
 
-// ACTUALIZAR CARRITO UI
 function updateCartUI() {
-    // Actualizar contador
     const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
     document.getElementById('cartCount').textContent = totalItems;
     
-    // Actualizar lista del carrito
     const cartItems = document.getElementById('cartItems');
     const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
     const shipping = subtotal >= config.shippingFreeLimit ? 0 : 9.99;
     const tax = subtotal * config.taxRate;
     const total = subtotal + shipping + tax;
     
-    // Actualizar totales
     document.getElementById('cartSubtotal').textContent = `${config.currency}${subtotal.toFixed(2)}`;
     document.getElementById('cartShipping').textContent = shipping === 0 ? 'Gratis' : `${config.currency}${shipping.toFixed(2)}`;
     document.getElementById('cartTax').textContent = `${config.currency}${tax.toFixed(2)}`;
@@ -577,49 +533,6 @@ function updateCartUI() {
         </div>
     `).join('');
 }
-
-// NOTIFICACIONES
-window.showNotification = function(message, type = 'info') {
-    const container = document.getElementById('notificationContainer');
-    
-    const notification = document.createElement('div');
-    notification.className = `notification ${type}`;
-    
-    const icons = {
-        success: 'fas fa-check-circle',
-        error: 'fas fa-exclamation-circle',
-        info: 'fas fa-info-circle',
-        warning: 'fas fa-exclamation-triangle'
-    };
-    
-    notification.innerHTML = `
-        <i class="${icons[type] || icons.info}"></i>
-        <span>${message}</span>
-    `;
-    
-    container.appendChild(notification);
-    
-    // Animación de entrada
-    setTimeout(() => notification.classList.add('show'), 10);
-    
-    // Eliminar después de 3 segundos
-    setTimeout(() => {
-        notification.classList.remove('show');
-        setTimeout(() => notification.remove(), 300);
-    }, 3000);
-};
-
-// MOSTRAR DETALLE (placeholder)
-window.showProductDetail = function(productId) {
-    const product = products.find(p => p.id === productId);
-    showNotification(`Detalles de: ${product.name}`, 'info');
-};
-
-// AÑADIR A WISHLIST (placeholder)
-window.addToWishlist = function(productId) {
-    const product = products.find(p => p.id === productId);
-    showNotification(`${product.name} añadido a favoritos`, 'success');
-};
 
 // CHECKOUT
 function processCheckout() {
@@ -687,7 +600,7 @@ function saveOrder(orderData) {
         date: new Date().toISOString(),
         customer: orderData,
         items: [...cart],
-        subtotal: cart.reduce((sum, item) => sum + (item.price * item.quantity),0),
+        subtotal: cart.reduce((sum, item) => sum + (item.price * item.quantity), 0),
         status: 'pendiente'
     };
     orders.push(order);
@@ -717,5 +630,41 @@ window.handleCheckoutSubmit = function(e) {
     document.getElementById('checkoutForm').reset();
 };
 
-// CONFIGURAR EVENT LISTENERS (actualizar para incluir checkout modal)
-// (El código existente se mantiene, agregar al final de setupEventListeners)
+// NOTIFICACIONES
+window.showNotification = function(message, type = 'info') {
+    const container = document.getElementById('notificationContainer');
+    
+    const notification = document.createElement('div');
+    notification.className = `notification ${type}`;
+    
+    const icons = {
+        success: 'fas fa-check-circle',
+        error: 'fas fa-exclamation-circle',
+        info: 'fas fa-info-circle',
+        warning: 'fas fa-exclamation-triangle'
+    };
+    
+    notification.innerHTML = `
+        <i class="${icons[type] || icons.info}"></i>
+        <span>${message}</span>
+    `;
+    
+    container.appendChild(notification);
+    
+    setTimeout(() => notification.classList.add('show'), 10);
+    
+    setTimeout(() => {
+        notification.classList.remove('show');
+        setTimeout(() => notification.remove(), 300);
+    }, 3000);
+};
+
+window.showProductDetail = function(productId) {
+    const product = products.find(p => p.id === productId);
+    showNotification(`Detalles de: ${product.name}`, 'info');
+};
+
+window.addToWishlist = function(productId) {
+    const product = products.find(p => p.id === productId);
+    showNotification(`${product.name} añadido a favoritos`, 'success');
+};
