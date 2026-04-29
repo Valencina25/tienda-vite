@@ -7,54 +7,70 @@ var config = {
 };
 
 // PRODUCTOS
-var products = [
-    {
-        id: 1,
-        name: "MacBook Pro M2",
-        description: "Laptop profesional con chip M2",
-        price: 1499.99,
-        oldPrice: 1699.99,
-        category: "electronics",
-        image: "./images/macbook.jpg",
-        stock: 12,
-        rating: 4.8,
-        tags: ["nuevo", "oferta"]
-    },
-    {
-        id: 2,
-        name: "iPhone 14 Pro",
-        description: "Smartphone premium",
-        price: 999.99,
-        category: "electronics",
-        image: "./images/iphone.jpg",
-        stock: 25,
-        rating: 4.9,
-        tags: ["popular"]
-    },
-    {
-        id: 3,
-        name: "Sudadera Premium",
-        description: "Sudadera de algodón orgánico",
-        price: 49.99,
-        oldPrice: 69.99,
-        category: "clothing",
-        image: "./images/sudadera.jpg",
-        stock: 45,
-        rating: 4.6,
-        tags: ["oferta"]
-    },
-    {
-        id: 4,
-        name: "Zapatillas Running",
-        description: "Zapatillas deportivas",
-        price: 89.99,
-        category: "sports",
-        image: "./images/zapatillas.jpg",
-        stock: 30,
-        rating: 4.7,
-        tags: ["nuevo"]
+function loadProducts() {
+    try {
+        var stored = localStorage.getItem('adminProducts');
+        if (stored) {
+            var parsed = JSON.parse(stored);
+            if (Array.isArray(parsed) && parsed.length > 0) {
+                return parsed;
+            }
+        }
+    } catch (e) {
+        console.error('Error loading products:', e);
     }
-];
+
+    return [
+        {
+            id: 1,
+            name: "MacBook Pro M2",
+            description: "Laptop profesional con chip M2",
+            price: 1499.99,
+            oldPrice: 1699.99,
+            category: "electronics",
+            image: "./images/macbook.jpg",
+            stock: 12,
+            rating: 4.8,
+            tags: ["nuevo", "oferta"]
+        },
+        {
+            id: 2,
+            name: "iPhone 14 Pro",
+            description: "Smartphone premium",
+            price: 999.99,
+            category: "electronics",
+            image: "./images/iphone.jpg",
+            stock: 25,
+            rating: 4.9,
+            tags: ["popular"]
+        },
+        {
+            id: 3,
+            name: "Sudadera Premium",
+            description: "Sudadera de algodón orgánico",
+            price: 49.99,
+            oldPrice: 69.99,
+            category: "clothing",
+            image: "./images/sudadera.jpg",
+            stock: 45,
+            rating: 4.6,
+            tags: ["oferta"]
+        },
+        {
+            id: 4,
+            name: "Zapatillas Running",
+            description: "Zapatillas deportivas",
+            price: 89.99,
+            category: "sports",
+            image: "./images/zapatillas.jpg",
+            stock: 30,
+            rating: 4.7,
+            tags: ["nuevo"]
+        }
+    ];
+}
+
+var products = loadProducts();
 
 // ESTADO GLOBAL
 var cart = [];
