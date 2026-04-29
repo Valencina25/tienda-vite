@@ -15,7 +15,7 @@ var products = [
         price: 1499.99,
         oldPrice: 1699.99,
         category: "electronics",
-        image: "/images/macbook.jpg",
+        image: "./images/macbook.jpg",
         stock: 12,
         rating: 4.8,
         tags: ["nuevo", "oferta"]
@@ -26,7 +26,7 @@ var products = [
         description: "Smartphone premium",
         price: 999.99,
         category: "electronics",
-        image: "/images/iphone.jpg",
+        image: "./images/iphone.jpg",
         stock: 25,
         rating: 4.9,
         tags: ["popular"]
@@ -38,7 +38,7 @@ var products = [
         price: 49.99,
         oldPrice: 69.99,
         category: "clothing",
-        image: "/images/sudadera.jpg",
+        image: "./images/sudadera.jpg",
         stock: 45,
         rating: 4.6,
         tags: ["oferta"]
@@ -49,7 +49,7 @@ var products = [
         description: "Zapatillas deportivas",
         price: 89.99,
         category: "sports",
-        image: "/images/zapatillas.jpg",
+        image: "./images/zapatillas.jpg",
         stock: 30,
         rating: 4.7,
         tags: ["nuevo"]
