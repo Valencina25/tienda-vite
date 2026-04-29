@@ -1,5 +1,5 @@
 // CONFIGURACIÓN
-const config = {
+var config = {
     currency: '€',
     shippingFreeLimit: 50,
     shippingCost: 5.99,
@@ -7,7 +7,7 @@ const config = {
 };
 
 // PRODUCTOS
-const products = [
+var products = [
     {
         id: 1,
         name: "MacBook Pro M2",
@@ -57,11 +57,11 @@ const products = [
 ];
 
 // ESTADO GLOBAL
-let cart = [];
-let currentView = 'grid';
-let currentCategory = 'all';
-let currentSort = 'default';
-let searchTerm = '';
+var cart = [];
+var currentView = 'grid';
+var currentCategory = 'all';
+var currentSort = 'default';
+var searchTerm = '';
 
 // INICIALIZAR
 document.addEventListener('DOMContentLoaded', function() {
@@ -408,3 +408,8 @@ function showNotification(message) {
     document.body.appendChild(notification);
     setTimeout(function() { notification.remove(); }, 2000);
 }
+
+// Exportar funciones al scope global para uso en onclick
+window.addToCart = addToCart;
+window.removeFromCart = removeFromCart;
+window.updateCartItemQuantity = updateCartItemQuantity;
