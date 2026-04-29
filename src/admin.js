@@ -72,7 +72,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 price: 1499.99,
                 oldPrice: 1699.99,
                 category: "electronics",
-                image: "/images/macbook.jpg",
+                image: "./images/macbook.jpg",
                 stock: 12,
                 rating: 4.8,
                 tags: ["nuevo", "oferta"]
@@ -83,7 +83,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 description: "Smartphone premium con cámara de 48MP y Dynamic Island",
                 price: 999.99,
                 category: "electronics",
-                image: "/images/iphone.jpg",
+                image: "./images/iphone.jpg",
                 stock: 25,
                 rating: 4.9,
                 tags: ["popular"]
@@ -95,7 +95,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 price: 49.99,
                 oldPrice: 69.99,
                 category: "clothing",
-                image: "/images/sudadera.jpg",
+                image: "./images/sudadera.jpg",
                 stock: 45,
                 rating: 4.6,
                 tags: ["oferta"]
@@ -106,7 +106,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 description: "Zapatillas deportivas con tecnología de amortiguación",
                 price: 89.99,
                 category: "sports",
-                image: "/images/zapatillas.jpg",
+                image: "./images/zapatillas.jpg",
                 stock: 30,
                 rating: 4.7,
                 tags: ["nuevo"]
@@ -118,7 +118,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 price: 199.99,
                 oldPrice: 249.99,
                 category: "electronics",
-                image: "/images/auriculares.jpg",
+                image: "./images/auriculares.jpg",
                 stock: 18,
                 rating: 4.8,
                 tags: ["oferta", "popular"]
@@ -140,7 +140,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 description: "Recetas gourmet con fotografías profesionales",
                 price: 34.99,
                 category: "books",
-                image: "/images/libro.jpg",
+                image: "./images/libro.jpg",
                 stock: 60,
                 rating: 4.4,
                 tags: []
@@ -152,7 +152,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 price: 45.99,
                 oldPrice: 59.99,
                 category: "home",
-                image: "/images/lampara.jpg",
+                image: "./images/lampara.jpg",
                 stock: 28,
                 rating: 4.3,
                 tags: ["oferta"]
@@ -163,7 +163,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 description: "Bicicleta todo terreno, 21 velocidades, suspensión",
                 price: 599.99,
                 category: "sports",
-                image: "/images/bicicleta.jpg",
+                image: "./images/bicicleta.jpg",
                 stock: 8,
                 rating: 4.9,
                 tags: ["popular"]
@@ -174,7 +174,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 description: "Cámara mirrorless 24MP, grabación 4K, kit de lentes",
                 price: 1299.99,
                 category: "electronics",
-                image: "/images/camara.jpg",
+                image: "./images/camara.jpg",
                 stock: 15,
                 rating: 4.8,
                 tags: ["nuevo"]
@@ -186,7 +186,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 price: 129.99,
                 oldPrice: 159.99,
                 category: "home",
-                image: "/images/setcocina.jpg",
+                image: "./images/setcocina.jpg",
                 stock: 35,
                 rating: 4.6,
                 tags: ["oferta"]
@@ -197,7 +197,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 description: "Jeans de denim elástico, corte moderno",
                 price: 39.99,
                 category: "clothing",
-                image: "/images/jeans.jpg",
+                image: "./images/jeans.jpg",
                 stock: 50,
                 rating: 4.4,
                 tags: []
